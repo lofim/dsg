@@ -1,0 +1,11 @@
+{
+    "name": "users",
+    "schema": "public",
+    "columns": [
+        {
+            "name": "id",
+            "typ": ""
+        }
+    ],
+    "constraints": []
+}

@@ -1,0 +1,65 @@
+{
+    "name": "users",
+    "schema": "public",
+    "columns": [
+        {
+            "typ": "Integer",
+            "name": "id",
+            "annotation": null,
+            "isGenerated": true,
+            "isNullable": false,
+            "isUnique": true
+        },
+        {
+            "typ": {
+                "Varchar": 255
+            },
+            "name": "first_name",
+            "annotation": "FirstName",
+            "isGenerated": false,
+            "isNullable": false,
+            "isUnique": true
+        },
+        {
+            "typ": "Text",
+            "name": "last_name",
+            "annotation": "LastName",
+            "isGenerated": false,
+            "isNullable": false,
+            "isUnique": false
+        },
+        {
+            "typ":"Text",
+            "name": "description",
+            "annotation": "Paragraph",
+            "isGenerated": false,
+            "isNullable": false,
+            "isUnique": false
+        },
+        {
+            "typ": "Timestamp",
+            "name": "deleted_at",
+            "isGenerated": false,
+            "isNullable": false,
+            "isUnique": false
+        },
+        {
+            "typ": {
+                "Varchar": 10
+            },
+            "name": "role",
+            "annotation": "Seed[admin|user|reviewer]",
+            "isGenerated": false,
+            "isNullable": false,
+            "isUnique": false
+        },
+        {
+            "typ": "UUID",
+            "name": "skipped",
+            "isGenerated": true,
+            "isNullable": false,
+            "isUnique": false
+        }
+    ],
+    "constraints": []
+}
