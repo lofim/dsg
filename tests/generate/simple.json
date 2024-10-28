@@ -54,12 +54,11 @@
             "isUnique": false
         },
         {
-            "typ": "UUID",
+            "typ": "Uuid",
             "name": "skipped",
             "isGenerated": true,
             "isNullable": false,
             "isUnique": false
         }
-    ],
-    "constraints": []
+    ]
 }

@@ -14,20 +14,19 @@ use fake::{
 
 use crate::model::{Column, ColumnType, Table};
 
-pub fn generate_ddl(table: &Table, size: u32) -> Result<String> {
-    let capacity = estimate_capacity(&table, size);
+pub fn generate_dml(table: &Table, size: u32) -> Result<String> {
+    let capacity = estimate_capacity(table, size);
     let mut buffer = String::with_capacity(capacity);
 
     write_table_header(table, &mut buffer)?;
     write_table_values(table, size, &mut buffer)?;
 
-    return Ok(buffer);
+    Ok(buffer)
 }
 
 fn estimate_capacity(table: &Table, size: u32) -> usize {
     // calculate a more precise capacity based on field types
-    let capacity = size as usize * table.columns.len() * 1000;
-    return capacity;
+    size as usize * table.columns.len() * 1000
 }
 
 fn write_table_header(table: &Table, mut buffer: &mut String) -> Result<()> {
@@ -75,7 +74,7 @@ fn write_table_values(table: &Table, size: u32, mut buffer: &mut String) -> Resu
         } else {
             write!(&mut buffer, ",")?;
         }
-        write!(&mut buffer, "\n")?;
+        writeln!(&mut buffer)?;
     }
     Ok(())
 }
@@ -112,9 +111,10 @@ fn generate_unique_value(column_type: ColumnType, row_index: u32) -> String {
             row_index
         ),
         ColumnType::Text => format!("'{}{}'", Paragraph(1..2).fake::<String>(), row_index),
+        ColumnType::Uuid => generate_random_value(column_type),
 
         // TODO: the tricky ones, timestamps, dates, etc.
-        _ => todo!(),
+        _ => unimplemented!("Column type: {:?} does not support unique constraint atm", column_type),
     }
 }
 
@@ -131,7 +131,7 @@ fn generate_random_value(column_type: ColumnType) -> String {
         ColumnType::Varchar(len) => format!("'{}'", (1..len).fake::<String>()),
         ColumnType::Text => format!("'{}'", Paragraph(1..2).fake::<String>()),
 
-        ColumnType::UUID => format!("'{}'", UUIDv4.fake::<String>()),
+        ColumnType::Uuid => format!("'{}'", UUIDv4.fake::<String>()),
         ColumnType::Boolean => Faker.fake::<bool>().to_string(),
 
         ColumnType::Date => Date().fake::<String>(),
@@ -143,21 +143,21 @@ fn generate_random_value(column_type: ColumnType) -> String {
         ColumnType::Serial => panic!("tried to generate value for generated column type"),
         ColumnType::BigSerial => panic!("tried to generate value for generated column type"),
 
-        _ => todo!(),
+        _ => unimplemented!("Random value for column type: {:?} is not supported atm", column_type),
     }
 }
 
 fn generate_decimal(precision: Option<usize>, scale: Option<usize>) -> String {
-    if precision == None && scale == None {
+    if precision.is_none() && scale.is_none() {
         return format!("{}.{}", Faker.fake::<u32>(), Faker.fake::<u16>());
     }
 
-    if precision == None {
+    if precision.is_none() {
         panic!("encountered a decimal column with precision without scale");
     }
 
-    if scale == None {
-        if let Some(precision_value) = precision {
+    if scale.is_none() {
+        if let Some(_precision_value) = precision {
             // TODO: use precision value to limit maximum u32
             return format!("{}", Faker.fake::<u32>());
         }

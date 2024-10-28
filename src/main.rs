@@ -5,7 +5,7 @@ use std::{fs::File, io::BufReader, path::PathBuf};
 
 use anyhow::Result;
 use clap::{value_parser, Arg, Command};
-use generator::generate_ddl;
+use generator::generate_dml;
 use model::Table;
 
 fn main() {
@@ -65,7 +65,7 @@ fn run(app: Command) -> Result<()> {
             );
 
             // TODO: validation of input model
-            let content = generate_ddl(&table, *size)?;
+            let content = generate_dml(&table, *size)?;
             println!("{}", content);
 
             Ok(())

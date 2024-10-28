@@ -12,13 +12,13 @@ Optimized to output large data sets for database query performance benchmarking.
 
 ## Usage version 0.1 (design)
 
-Version 0.1 is intended to test a UX of the CLI tool.
+Version 0.1 is intended to test the UX of CLI interface.
 
 ### Roadmap
 
 - [x] basic generator from model to DDL
 - [x] handle basic constraints (UNIQUE)
-- [ ] json model representation reader
+- [x] json model representation reader
 - [ ] json schema validation (jsonschema or boon?)
 - [ ] have introspector to model command
 - [ ] semantic value generation based on faker annotations
